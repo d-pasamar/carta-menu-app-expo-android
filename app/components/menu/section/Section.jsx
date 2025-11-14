@@ -1,11 +1,20 @@
 // src/components/Menu/section/Section.jsx
 
 import { useState } from "react";
-import useItems from "../../../hooks/useItems"; // Importar el hook de ítems
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native"; // 🔑 Importaciones Nativas
+import useItems from "../../../hooks/useItems";
+// Asume que esta ruta se ajusta a la ubicación de tu imagen
 import defaultImage from "../../../img/Meal.png";
 import BotonesCRUD from "../../botonesCRUD/BotonesCrud";
 import Item from "./item/Item";
-import "./section.css";
+import SectionStyles from "./SectionStyles"; // 🔑 Importamos los estilos
 
 /**
  * Componente Section.jsx
@@ -29,14 +38,8 @@ export default function Section({
   onEliminarCategoria,
   onEditarCategoria,
 }) {
-  const {
-    items,
-    isLoading,
-    error,
-    crearItem, // Función POST (crea y recarga)
-    eliminarItem, // Función DELETE (elimina y recarga)
-    editarItem, // Función PUT (edita)
-  } = useItems(id); // Llama al hook unificado pasándole el ID de la categoría
+  const { items, isLoading, error, crearItem, eliminarItem, editarItem } =
+    useItems(id);
 
   // ===== ESTADO LOCAL =====
   const [isEditing, setIsEditing] = useState(false);
@@ -85,7 +88,6 @@ export default function Section({
    *
    * @returns {void} - No devuelve valor.
    */
-
   const handleAddItem = () => {
     // Llama directamente a la función del hook
     crearItem({
@@ -99,46 +101,63 @@ export default function Section({
   let tituloContent;
   if (modoEdicion) {
     tituloContent = (
-      <div className="section-header">
+      // Reemplaza <div className="section-header"> por <View style={SectionStyles.sectionHeader}>
+      <View style={SectionStyles.sectionHeader}>
         {isEditing ? (
-          <input
-            className="titulo-editable-input"
-            type="text"
+          // Reemplaza <input> por <TextInput>
+          <TextInput
+            style={SectionStyles.titleEditableInput}
             value={nuevoTitulo}
-            onChange={(e) => setNuevoTitulo(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSave()}
+            onChangeText={setNuevoTitulo} // Usar onChangeText en RN
+            onSubmitEditing={handleSave} // Reemplaza onKeyDown (Enter) por onSubmitEditing
           />
         ) : (
-          <h2 className="titulo-editable" onClick={handleEditClick}>
+          // Reemplaza <h2 onClick> por <Text style={...} onPress>
+          <Text style={SectionStyles.titleEditable} onPress={handleEditClick}>
             {title}
-          </h2>
+          </Text>
         )}
         <BotonesCRUD
           isEditing={isEditing}
           onEliminar={() => onEliminarCategoria(id)}
           onEditar={handleCRUDBtnClick}
         />
-      </div>
+      </View>
     );
   } else {
-    tituloContent = <h2 className="titulo-centrado">{title}</h2>;
+    // Reemplaza <h2> por <Text>
+    tituloContent = <Text style={SectionStyles.titleCentered}>{title}</Text>;
   }
 
   // Funcion para el renderizado de la lista de items, estados de carga y error.
   const renderItemList = () => {
     // Caso de Carga
     if (isLoading) {
-      return <p className="section-loading">Cargando ítems...</p>;
+      return (
+        <Text style={SectionStyles.sectionInfoText}>Cargando ítems...</Text>
+      );
     }
 
     // Caso de Error
     if (error) {
-      return <p className="section-error">Error al cargar: {error}</p>;
+      return (
+        <Text
+          style={StyleSheet.compose(SectionStyles.sectionInfoText, {
+            color: "red",
+          })}
+        >
+          Error al cargar: {error}
+        </Text>
+      );
     }
 
     // Caso Sin Ítems (y no estamos editando)
     if (items.length === 0 && !modoEdicion) {
-      return <p className="section-loading">No hay ítems en esta sección.</p>;
+      return (
+        <Text style={SectionStyles.sectionInfoText}>
+          No hay ítems en esta sección.
+        </Text>
+      );
     }
 
     // Renderizar la Lista
@@ -155,33 +174,46 @@ export default function Section({
     ));
   };
 
+  // Reemplaza <button className="btn-agregar-item"> por <Pressable>
   const agregarItemBoton = modoEdicion && (
-    <button className="btn-agregar-item" onClick={handleAddItem}>
-      Añadir Ítem
-    </button>
+    <Pressable
+      style={({ pressed }) => [
+        SectionStyles.baseAddItemButton,
+        pressed && SectionStyles.addItemButtonHover,
+        { transform: [{ scale: pressed ? 1.05 : 1 }] }, // Simula transform: scale(1.05);
+      ]}
+      onPress={handleAddItem}
+      hitSlop={10}
+    >
+      <Text style={SectionStyles.addItemButtonText}>Añadir Ítem</Text>
+    </Pressable>
   );
 
   // ===== RETURN =====
 
+  // Reemplaza <section> por <View>
   return (
-    <section className="section">
+    <View style={SectionStyles.sectionContainer}>
       {tituloContent}
+
       {/* Imagen de Categoría (opcional) */}
+      {/* Reemplazamos <img> por <Image> y usamos onError nativo */}
       {image && !modoEdicion && (
-        <img
-          src={image}
-          alt={title}
-          className="section-image"
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = defaultImage;
-          }}
+        <Image
+          // source espera un objeto { uri: string } para URLs
+          source={{ uri: image }}
+          // defaultImage (asumiendo que es una imagen local)
+          defaultSource={defaultImage}
+          style={SectionStyles.sectionImage}
+          // El onError de RN es más limitado; defaultSource maneja mejor el fallback
         />
       )}
-      <div className="items-list">
+
+      {/* Reemplaza <div className="items-list"> por <View style={SectionStyles.itemsList}> */}
+      <View style={SectionStyles.itemsList}>
         {renderItemList()}
         {agregarItemBoton}
-      </div>
-    </section>
+      </View>
+    </View>
   );
 }
