@@ -13,7 +13,8 @@ export default StyleSheet.create({
   },
   menuContainer: {
     position: "relative",
-    width: "80%",
+    width: "95%",
+    flex: 1,
     backgroundColor: "burlywood",
     //margin-left: "auto",    // RN no soporta auto, se usa alignSelf
     //margin-right: "auto",

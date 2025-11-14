@@ -24,12 +24,12 @@ export default StyleSheet.create({
 
   // Contenedor principal para MODO EDICIÓN (reemplaza .item-editable)
   itemEditableContainer: {
-    flexDirection: "row", // display: flex
+    flexDirection: "column", // display: flex
     alignItems: "center", // align-items: center
     justifyContent: "space-between", // justify-content: space-between
     paddingVertical: 12,
     paddingHorizontal: 15,
-    backgroundColor: "rgba(255, 255, 255, 0.9)", // Fondo claro para resaltar edición
+
     transition: "background-color 0.3s ease", // No funciona en RN, pero se incluye como nota.
   },
 
@@ -58,6 +58,7 @@ export default StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 4,
     marginRight: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.9)", // Fondo claro para resaltar edición
     fontSize: 18, // Asegura que el texto sea legible
   },
 
@@ -70,6 +71,7 @@ export default StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 4,
     textAlign: "right",
+    backgroundColor: "rgba(255, 255, 255, 0.9)", // Fondo claro para resaltar edición
     fontSize: 18, // Asegura que el texto sea legible
   },
 });

@@ -1,11 +1,11 @@
 // app/components/menu/section/item/Item.jsx
 
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native"; // 🔑 Importaciones Nativas
+import { StyleSheet, Text, TextInput, View } from "react-native"; // Importaciones Nativas
 
 // Asume que BotonesCRUD.jsx será migrado después
-//import BotonesCRUD from "../../../botonesCRUD/BotonesCrud";
-import ItemStyles from "./ItemStyles"; // 🔑 Importamos los estilos
+import BotonesCRUD from "../../../botonesCRUD/BotonesCrud";
+import ItemStyles from "./ItemStyles"; // Importamos los estilos
 
 /**
  * Componente Item.jsx

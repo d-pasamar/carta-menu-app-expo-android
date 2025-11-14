@@ -8,7 +8,7 @@ import Line from "./components/Line";
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
 import Menu from "./components/menu/Menu";
-//import ModoEdicionToggle from "./components/modoEdicion/ModoEdicionToggle";
+import ModoEdicionToggle from "./components/modoEdicion/ModoEdicionToggle";
 
 // HOOKS
 import useCategorias from "./hooks/useCategorias";
@@ -37,11 +37,11 @@ export default function MenuApp() {
         >
           <View style={styles.menuContainer}>
             <Header />
-            {/*
-        <ModoEdicionToggle
-          modoEdicion={modoEdicion}
-          setModoEdicion={setModoEdicion}
-        /> */}
+
+            <ModoEdicionToggle
+              modoEdicion={modoEdicion}
+              setModoEdicion={setModoEdicion}
+            />
             <Line />
 
             <Menu

@@ -26,7 +26,7 @@ export default StyleSheet.create({
 
   // Reemplaza .section-header { display: flex; ... }
   sectionHeader: {
-    flexDirection: "row", // display: flex
+    flexDirection: "flex", // display: flex
     justifyContent: "space-between", // justify-content: space-between
     alignItems: "center", // align-items: center
     marginBottom: 22, // ~ 1.4rem * 16px/rem
@@ -39,9 +39,10 @@ export default StyleSheet.create({
     fontFamily: "Impact",
     fontSize: 30,
     padding: 0,
-    borderBottomWidth: 1, // Simular un foco
-    borderColor: "brown",
+    //borderBottomWidth: 1, // Simular un foco
+    //borderColor: "brown",
     flexGrow: 1, // Permite que el input crezca
+    backgroundColor: "rgba(255, 255, 255, 0.9)", // Fondo claro para resaltar edición
     marginRight: 10,
   },
 
