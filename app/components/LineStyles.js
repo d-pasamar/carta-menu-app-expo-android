@@ -8,6 +8,6 @@ export default StyleSheet.create({
     height: 2,
     backgroundColor: "brown",
     width: "100%", // imitar el comportamiento de <hr />
-    marginVertical: 1, // Margen para separación
+    marginVertical: 10, // Margen para separación
   },
 });

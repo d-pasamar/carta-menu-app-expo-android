@@ -4,7 +4,7 @@ import { ImageBackground, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 // Nuestros componentes
-//import Header from "./components/Header/Header";
+import Header from "./components/header/Header";
 //import Menu from "./components/Menu/Menu";
 import Line from "./components/Line";
 import Footer from "./components/footer/Footer";
@@ -36,13 +36,14 @@ export default function MenuApp() {
           style={styles.imageBackground}
         >
           <View style={styles.menuContainer}>
-            {/* 
-        <Header />
+            <Header />
+            {/*
         <ModoEdicionToggle
           modoEdicion={modoEdicion}
           setModoEdicion={setModoEdicion}
-        />
-        <Line />
+        /> */}
+            <Line />
+            {/* 
         <Menu
           data={categorias}
           modoEdicion={modoEdicion}
