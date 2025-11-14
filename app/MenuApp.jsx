@@ -1,0 +1,63 @@
+import { useState } from "react";
+// IMPORTACIONES NATIVAS
+import { ImageBackground, Text, View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
+// Nuestros componentes
+//import Header from "./components/Header/Header";
+//import Menu from "./components/Menu/Menu";
+//import Footer from "./components/Footer/Footer";
+//import Line from "./components/Line";
+//import ModoEdicionToggle from "./components/modoEdicion/ModoEdicionToggle";
+
+// HOOKS
+//import useCategorias from "./hooks/useCategorias";
+
+import styles from "./MenuAppStyles";
+
+export default function MenuApp() {
+  // ===== ESTADO DE LA INTERFAZ =====
+  const [modoEdicion, setModoEdicion] = useState(false);
+
+  // ===== GESTION DEL ESTADO Y CRUD DE CATEGORIAS (NIVEL SUPERIOR) =====
+  // useCategorias se encarga de cargar las categorías desde la API
+  //const { categorias, agregarCategoria, eliminarCategoria, editarCategoria } =
+  //  useCategorias(7032); // Nuestro usuario_id
+
+  // ===== RETURN =====
+  return (
+    <SafeAreaProvider>
+      {/* Evita que el contenido quede tapado por la barra de estado, notch o gestos del sistema */}
+      <SafeAreaView style={styles.container}>
+        <ImageBackground
+          source={{
+            uri: "https://cdn.freecodecamp.org/curriculum/css-cafe/beans.jpg",
+          }}
+          style={styles.container}
+        >
+          <View style={styles.menuContainer}>
+            {/* 
+        <Header />
+        <ModoEdicionToggle
+          modoEdicion={modoEdicion}
+          setModoEdicion={setModoEdicion}
+        />
+        <Line />
+        <Menu
+          data={categorias}
+          modoEdicion={modoEdicion}
+          // Funciones CRUD de CATEGORÍA
+          onAgregarCategoria={agregarCategoria}
+          onEliminarCategoria={eliminarCategoria}
+          onEditarCategoria={editarCategoria}
+        />
+        <Line />
+        <Footer />
+        */}
+            <Text>Hola esto es una prueba</Text>
+          </View>
+        </ImageBackground>
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
+}
