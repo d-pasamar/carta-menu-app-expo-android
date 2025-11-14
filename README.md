@@ -1,50 +1,91 @@
-# Welcome to your Expo app 👋
+🍽️ [NOMBRE DEL PROYECTO] - Menú Digital Interactivo
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Esta es una aplicación de menú digital interactivo, diseñada para ser utilizada en tabletas o dispositivos Android a través de Expo. Permite a los dueños de negocios gestionar y actualizar su carta en tiempo real mediante un modo de edición integrado.
 
-## Get started
+El proyecto está desarrollado en React Native (Expo) y utiliza componentes funcionales y hooks para una gestión de estado eficiente.
 
-1. Install dependencies
+🌟 Características Principales
 
-   ```bash
-   npm install
-   ```
+Modo Lectura: Vista limpia y optimizada del menú para el usuario final.
 
-2. Start the app
+Modo Edición (CRUD): Un modo protegido que permite:
 
-   ```bash
-   npx expo start
-   ```
+Crear, Editar y Eliminar categorías del menú.
 
-In the output, you'll find options to open the app in a
+Crear, Editar y Eliminar ítems dentro de cada categoría.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Cambio de nombre de ítems y categorías en línea (inline editing).
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Diseño Responsivo: Adaptado para una visualización óptima en dispositivos móviles y tabletas.
 
-## Get a fresh project
+Componentes Modulares: Estructura de componentes reutilizables (Section, Item, BotonesCRUD, etc.) para facilitar el mantenimiento.
 
-When you're ready, run:
+🚀 Tecnologías Utilizadas
 
-```bash
-npm run reset-project
-```
+React Native
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Expo (para el desarrollo y la construcción)
 
-## Learn more
+JavaScript (ES6+)
 
-To learn more about developing your project with Expo, look at the following resources:
+@expo/vector-icons (para la iconografía)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+📁 Estructura del Proyecto
 
-## Join the community
+La estructura sigue una organización clara por funcionalidades y componentes:
 
-Join our community of developers creating universal apps.
+carta-menu-app-expo-android/
+├── App.jsx # Componente principal de la aplicación.
+├── app/
+│ └── components/ # Componentes reutilizables y la estructura del Menú.
+│ ├── botonesCRUD/
+│ ├── menu/
+│ │ ├── Menu.jsx
+│ │ ├── MenuStyles.js
+│ │ └── section/
+│ │ ├── Section.jsx
+│ │ ├── SectionStyles.js
+│ │ └── item/
+│ │ ├── Item.jsx
+│ │ └── ItemStyles.js
+│ └── ...
+├── assets/ # Recursos (imágenes, fuentes, etc.)
+├── package.json
+└── README.md
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+⚙️ Instalación y Ejecución
+
+Sigue estos pasos para poner en marcha el proyecto:
+
+1. Clonar el Repositorio
+
+git clone [https://github.com/d-pasamar/carta-menu-app-expo-android.git](https://github.com/d-pasamar/carta-menu-app-expo-android.git)
+cd carta-menu-app-expo-android
+
+2. Instalar Dependencias
+
+Asegúrate de tener Node.js y el CLI de Expo instalados globalmente.
+
+npm install
+
+# o
+
+yarn install
+
+3. Ejecutar la Aplicación
+
+Inicia el servidor de desarrollo de Expo:
+
+npx expo start
+
+Escanea el código QR desde la aplicación Expo Go en tu dispositivo móvil o emulador Android.
+
+📝 Próximos Pasos (Pendientes)
+
+[ ] Implementar persistencia de datos (Firestore o AsyncStorage).
+
+[ ] Mejorar la experiencia de usuario en la creación de nuevos ítems/categorías.
+
+[ ] Añadir transiciones y animaciones más fluidas.
+
+[ ] Optimización para el modo oscuro (Dark Mode).
