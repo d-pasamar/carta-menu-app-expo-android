@@ -4,10 +4,10 @@ import { ImageBackground, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 // Nuestros componentes
-import Header from "./components/header/Header";
-//import Menu from "./components/Menu/Menu";
 import Line from "./components/Line";
 import Footer from "./components/footer/Footer";
+import Header from "./components/header/Header";
+import Menu from "./components/menu/Menu";
 //import ModoEdicionToggle from "./components/modoEdicion/ModoEdicionToggle";
 
 // HOOKS
@@ -43,18 +43,16 @@ export default function MenuApp() {
           setModoEdicion={setModoEdicion}
         /> */}
             <Line />
-            {/* 
-        <Menu
-          data={categorias}
-          modoEdicion={modoEdicion}
-          // Funciones CRUD de CATEGORÍA
-          onAgregarCategoria={agregarCategoria}
-          onEliminarCategoria={eliminarCategoria}
-          onEditarCategoria={editarCategoria}
-        />
-        
-        
-        */}
+
+            <Menu
+              data={categorias}
+              modoEdicion={modoEdicion}
+              // Funciones CRUD de CATEGORÍA
+              onAgregarCategoria={agregarCategoria}
+              onEliminarCategoria={eliminarCategoria}
+              onEditarCategoria={editarCategoria}
+            />
+
             <Line />
             <Footer />
           </View>
