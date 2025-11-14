@@ -4,7 +4,7 @@ import { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native"; // 🔑 Importaciones Nativas
 
 // Asume que BotonesCRUD.jsx será migrado después
-import BotonesCRUD from "../../../botonesCRUD/BotonesCrud";
+//import BotonesCRUD from "../../../botonesCRUD/BotonesCrud";
 import ItemStyles from "./ItemStyles"; // 🔑 Importamos los estilos
 
 /**

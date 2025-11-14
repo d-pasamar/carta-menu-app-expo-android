@@ -11,7 +11,7 @@ import Menu from "./components/menu/Menu";
 //import ModoEdicionToggle from "./components/modoEdicion/ModoEdicionToggle";
 
 // HOOKS
-//import useCategorias from "./hooks/useCategorias";
+import useCategorias from "./hooks/useCategorias";
 
 import styles from "./MenuAppStyles";
 
@@ -21,8 +21,8 @@ export default function MenuApp() {
 
   // ===== GESTION DEL ESTADO Y CRUD DE CATEGORIAS (NIVEL SUPERIOR) =====
   // useCategorias se encarga de cargar las categorías desde la API
-  //const { categorias, agregarCategoria, eliminarCategoria, editarCategoria } =
-  //  useCategorias(7032); // Nuestro usuario_id
+  const { categorias, agregarCategoria, eliminarCategoria, editarCategoria } =
+    useCategorias(7032); // Nuestro usuario_id
 
   // ===== RETURN =====
   return (

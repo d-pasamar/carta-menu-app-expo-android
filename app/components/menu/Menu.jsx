@@ -1,6 +1,6 @@
 // app/components/menu/Menu.jsx
 
-import { Pressable, Text } from "react-native";
+import { Pressable, ScrollView, Text } from "react-native";
 import MenuStyles from "./MenuStyles";
 import Section from "./section/Section";
 

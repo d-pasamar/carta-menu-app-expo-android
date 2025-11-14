@@ -13,9 +13,9 @@ import {
 import useItems from "../../../hooks/useItems";
 // Asume que esta ruta se ajusta a la ubicación de tu imagen
 import defaultImage from "../../../../img/Meal.png";
-import BotonesCRUD from "../../botonesCRUD/BotonesCrud";
+//import BotonesCRUD from "../../botonesCRUD/BotonesCrud";
 import Item from "./item/Item";
-import SectionStyles from "./SectionStyles"; // 🔑 Importamos los estilos
+import SectionStyles from "./SectionStyles"; // Importamos los estilos
 
 /**
  * Componente Section.jsx
