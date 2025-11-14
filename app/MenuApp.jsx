@@ -1,13 +1,13 @@
 import { useState } from "react";
 // IMPORTACIONES NATIVAS
-import { ImageBackground, Text, View } from "react-native";
+import { ImageBackground, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 // Nuestros componentes
 //import Header from "./components/Header/Header";
 //import Menu from "./components/Menu/Menu";
-//import Footer from "./components/Footer/Footer";
-//import Line from "./components/Line";
+import Line from "./components/Line";
+import Footer from "./components/footer/Footer";
 //import ModoEdicionToggle from "./components/modoEdicion/ModoEdicionToggle";
 
 // HOOKS
@@ -33,7 +33,7 @@ export default function MenuApp() {
           source={{
             uri: "https://cdn.freecodecamp.org/curriculum/css-cafe/beans.jpg",
           }}
-          style={styles.container}
+          style={styles.imageBackground}
         >
           <View style={styles.menuContainer}>
             {/* 
@@ -51,10 +51,11 @@ export default function MenuApp() {
           onEliminarCategoria={eliminarCategoria}
           onEditarCategoria={editarCategoria}
         />
-        <Line />
-        <Footer />
+        
+        
         */}
-            <Text>Hola esto es una prueba</Text>
+            <Line />
+            <Footer />
           </View>
         </ImageBackground>
       </SafeAreaView>

@@ -8,6 +8,9 @@ export default StyleSheet.create({
     // fontFamily se aplica en cada <Text>, no en el body
     padding: 20,
   },
+  imageBackground: {
+    flex: 1, // ImageBackground debe expandirse dentro de su padre
+  },
   menuContainer: {
     position: "relative",
     width: "80%",
