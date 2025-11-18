@@ -4,9 +4,10 @@ import { ImageBackground, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 // Nuestros componentes
-import Line from "./components/Line";
+import BotonCamara from "./components/camara/botonPermisosCamara/BotonPermisosCamara";
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
+import Line from "./components/Line";
 import Menu from "./components/menu/Menu";
 import ModoEdicionToggle from "./components/modoEdicion/ModoEdicionToggle";
 
@@ -42,6 +43,8 @@ export default function MenuApp() {
               modoEdicion={modoEdicion}
               setModoEdicion={setModoEdicion}
             />
+            <BotonCamara />
+
             <Line />
 
             <Menu
