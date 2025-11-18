@@ -25,6 +25,8 @@ export default function Menu({
   onAgregarCategoria,
   onEliminarCategoria,
   onEditarCategoria,
+
+  abrirCamaraParaItem,
 }) {
   // ===== LOGICA =====
 
@@ -41,6 +43,8 @@ export default function Menu({
           // Funciones CRUD de Categoría
           onEliminarCategoria={onEliminarCategoria}
           onEditarCategoria={onEditarCategoria}
+          // Pasamos la función
+          abrirCamaraParaItem={abrirCamaraParaItem}
         />
       ))
     : null;

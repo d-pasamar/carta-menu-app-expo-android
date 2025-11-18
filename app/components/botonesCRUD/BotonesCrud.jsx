@@ -13,7 +13,13 @@ import BotonesCRUDStyles from "./BotonesCRUDStyles"; //Importamos los estilos
  * @param {boolean} props.isEditing - Indica si el modo 'Guardar' está activo.
  * @returns {JSX.Element} - Elemento JSX con los botones.
  */
-export default function BotonesCRUD({ onEditar, onEliminar, isEditing }) {
+export default function BotonesCRUD({
+  onEditar,
+  onEliminar,
+  isEditing,
+  itemId,
+  onOpenCamera,
+}) {
   // Si estamos en edición -> guardar, si no -> Editar
   const buttonText = isEditing ? "💾 Guardar" : "✏️ Editar";
 
@@ -22,9 +28,29 @@ export default function BotonesCRUD({ onEditar, onEliminar, isEditing }) {
     ? BotonesCRUDStyles.hoverGuardar
     : BotonesCRUDStyles.hoverEditar;
 
+  // OCULTAR EN CATEGORÍAS
+  // mostrarCameraButton es true SOLO si itemId y onOpenCamera existen (contexto de Ítem)
+  const mostrarCameraButton =
+    itemId !== undefined && onOpenCamera !== undefined;
+
   return (
     // Reemplaza <div className="botones-crud"> por <View style={BotonesCRUDStyles.crudContainer}>
     <View style={BotonesCRUDStyles.crudContainer}>
+      {/* Botón de CÁMARA (Solo visible si estamos editando) */}
+      {mostrarCameraButton && isEditing && (
+        <Pressable
+          onPress={() => onOpenCamera(itemId)} // Llama a la función del padre con el ID del ítem
+          style={({ pressed }) => [
+            BotonesCRUDStyles.baseButton,
+            BotonesCRUDStyles.cameraButton, // Estilo específico para el botón de foto
+            { transform: [{ scale: pressed ? 1.05 : 1 }] },
+          ]}
+          hitSlop={10}
+        >
+          <Text style={BotonesCRUDStyles.buttonText}>📸 Foto</Text>
+        </Pressable>
+      )}
+
       {/* Botón Guardar / Editar */}
       <Pressable
         onPress={onEditar}

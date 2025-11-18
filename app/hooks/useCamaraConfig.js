@@ -1,7 +1,7 @@
 // app/hooks/useCamaraConfig.js
 
 import { useCameraPermissions } from "expo-camera";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 /**
  * Custom hook: Encapsula la lógica de configuración (permisos y orientación) de la cámara.
@@ -25,10 +25,35 @@ export default function useCamaraConfig() {
     setFacing((current) => (current === "back" ? "front" : "back"));
   };
 
+  const cameraRef = useRef(null);
+
+  // 4. Lógica para tomar una foto
+
+  /**
+ * Captura una foto usando la cámara activa y devuelve la URI local del archivo.
+ * @param {function(string): void} onCapture - Función callback que recibe la URI (ruta local) de la foto capturada.
+ * @returns {void}
+ */
+  const takePicture = async (onCapture) => {
+    // 1. Verificar que la referencia de la cámara existe
+    if (cameraRef.current) {
+      // 2. Llamar al método de captura de la CameraView
+      const photo = await cameraRef.current.takePictureAsync({
+        quality: 0.5,
+        exif: false,
+      });
+
+      // 3.Deolver la URI al componente padre
+      onCapture(photo.uri);
+    }
+  };
+
   return {
     permission,
     requestPermission,
     facing,
     toggleCameraFacing,
+    cameraRef,
+    takePicture,
   };
 }

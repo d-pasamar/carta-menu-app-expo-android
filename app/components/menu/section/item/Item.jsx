@@ -4,7 +4,7 @@ import { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native"; // Importaciones Nativas
 
 // Asume que BotonesCRUD.jsx será migrado después
-import BotonesCRUD from "../../../botonesCRUD/BotonesCrud";
+import BotonesCRUD from "../../../botonesCRUD/BotonesCRUD";
 import ItemStyles from "./ItemStyles"; // Importamos los estilos
 
 /**
@@ -29,6 +29,7 @@ export default function Item({
   modoEdicion,
   onEliminarItem,
   onEditarItem,
+  abrirCamaraParaItem,
 }) {
   // ===== ESTADO LOCAL =====
   const [isEditing, setIsEditing] = useState(false);
@@ -117,6 +118,8 @@ export default function Item({
       isEditing={isEditing}
       onEliminar={() => onEliminarItem(id)}
       onEditar={handleCRUDBtnClick}
+      itemId={id}
+      onOpenCamera={abrirCamaraParaItem}
     />
   );
 

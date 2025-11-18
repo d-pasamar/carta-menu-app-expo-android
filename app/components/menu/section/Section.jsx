@@ -13,7 +13,7 @@ import {
 import useItems from "../../../hooks/useItems";
 // Asume que esta ruta se ajusta a la ubicación de tu imagen
 import defaultImage from "../../../../img/Meal.png";
-import BotonesCRUD from "../../botonesCRUD/BotonesCrud";
+import BotonesCRUD from "../../botonesCRUD/BotonesCRUD";
 import Item from "./item/Item";
 import SectionStyles from "./SectionStyles"; // Importamos los estilos
 
@@ -38,6 +38,7 @@ export default function Section({
   modoEdicion,
   onEliminarCategoria,
   onEditarCategoria,
+  abrirCamaraParaItem,
 }) {
   const { items, isLoading, error, crearItem, eliminarItem, editarItem } =
     useItems(id);
@@ -171,6 +172,8 @@ export default function Section({
         modoEdicion={modoEdicion}
         onEliminarItem={eliminarItem}
         onEditarItem={editarItem}
+        // Enviamos nueva PROP al Item
+        abrirCamaraParaItem={abrirCamaraParaItem}
       />
     ));
   };

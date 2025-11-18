@@ -46,4 +46,10 @@ export default StyleSheet.create({
   hoverGuardar: {
     backgroundColor: "#c8e6c9",
   },
+
+  // NUEVO ESTILO PARA EL BOTÓN DE FOTO
+  cameraButton: {
+    backgroundColor: "burlywood",
+    marginRight: 8, // Pequeña separación del botón Guardar/Editar
+  },
 });
