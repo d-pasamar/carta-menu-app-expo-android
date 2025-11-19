@@ -9,6 +9,7 @@ export default StyleSheet.create({
     gap: 6, // gap: 0.5rem (aprox. 8px)
     marginTop: 6, // margin-top: 0.5rem
     justifyContent: "flex-end",
+    flexWrap: "wrap",
   },
 
   // Base para todos los botones: .btn-editar, .btn-eliminar, .btn-guardar

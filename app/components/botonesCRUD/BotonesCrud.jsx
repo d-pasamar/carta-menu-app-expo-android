@@ -28,16 +28,13 @@ export default function BotonesCRUD({
     ? BotonesCRUDStyles.hoverGuardar
     : BotonesCRUDStyles.hoverEditar;
 
-  // OCULTAR EN CATEGORÍAS
-  // mostrarCameraButton es true SOLO si itemId y onOpenCamera existen (contexto de Ítem)
-  const mostrarCameraButton =
-    itemId !== undefined && onOpenCamera !== undefined;
+  const isItemContext = itemId !== undefined && onOpenCamera !== undefined;
 
   return (
     // Reemplaza <div className="botones-crud"> por <View style={BotonesCRUDStyles.crudContainer}>
     <View style={BotonesCRUDStyles.crudContainer}>
       {/* Botón de CÁMARA (Solo visible si estamos editando) */}
-      {mostrarCameraButton && isEditing && (
+      {isItemContext && isEditing && (
         <Pressable
           onPress={() => onOpenCamera(itemId)} // Llama a la función del padre con el ID del ítem
           style={({ pressed }) => [

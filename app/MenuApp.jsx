@@ -13,6 +13,7 @@ import ModoEdicionToggle from "./components/modoEdicion/ModoEdicionToggle";
 
 // HOOKS
 import useCategorias from "./hooks/useCategorias";
+import useImagePicker from "./hooks/useImagePicker";
 
 import styles from "./MenuAppStyles";
 
@@ -20,33 +21,56 @@ export default function MenuApp() {
   // ===== ESTADO DE LA INTERFAZ =====
   const [modoEdicion, setModoEdicion] = useState(false);
   const [isCamaraActiva, setIsCamaraActiva] = useState(false);
-  // NUEVO ESTADO: ID del ítem que se está editando, para la cámara
-  const [editingItemId, setEditingItemId] = useState(null);
+
+  // Estado para pasar los datos de la imagen
+  const [capturedImageData, setCapturedImageData] = useState(null);
+
+  // ===== LLAMADA AL HOOK DE IMAGEN =====
+  const { seleccionarImagenParaItem, setEditingItemId } = useImagePicker();
 
   // ===== GESTION DEL ESTADO Y CRUD DE CATEGORIAS (NIVEL SUPERIOR) =====
   // useCategorias se encarga de cargar las categorías desde la API
   const { categorias, agregarCategoria, eliminarCategoria, editarCategoria } =
     useCategorias(7032); // Nuestro usuario_id
 
-  // FUNCIÓN QUE ACTIVA LA CÁMARA PARA UN ÍTEM ESPECÍFICO
-  const abrirCamaraParaItem = (itemId) => {
-    setEditingItemId(itemId); // 1. Guarda el ID del producto
-    setIsCamaraActiva(true); // 2. Abre la cámara
+  // Unifica Cámara y Galería
+  const abrirCamaraParaItem = async (itemId) => {
+    // Llamar al hook que maneja la alerta y la galería.
+    const imageResult = await seleccionarImagenParaItem(
+      itemId,
+      setIsCamaraActiva
+    );
+
+    // Procesar el resultado
+    if (imageResult) {
+      if (imageResult.fromCamera) {
+        // La cámara ya se abrió (setIsCamaraActiva(true) fue llamado en el hook)
+        return; // Esperamos el resultado de BotonPermisosCamara
+      }
+      // Resultado de la Galería: El hook ya retornó la URI
+      handlePhotoCaptured(imageResult.uri, imageResult.itemId);
+    }
   };
 
-  // MODO FOTO
-  // Función que se ejecuta cuando el usuario toma la foto
-  const handlePhotoCaptured = (photoUri) => {
-    console.log(`URI de foto capturada para ID ${editingItemId}: ${photoUri}`);
-    // AQUÍ VA LA LÓGICA DE ASOCIAR photoUri CON editingItemId
+  // --> FUNCIÓN: Guardado LOCAL (Única función de callback para Galería y Cámara)
+  const handlePhotoCaptured = (photoUri, itemIdFromCamera = null) => {
+    const idToUpdate = itemIdFromCamera;
+    if (!idToUpdate) {
+      console.error("No hay ID de ítem");
+      setIsCamaraActiva(false);
+      return;
+    }
 
-    setIsCamaraActiva(false); // Cierra la cámara
-    setEditingItemId(null); // Limpia el estado de edición
+    // Guardamos la UIR y el ID para que Menu/Section/Item lo procesen
+    setCapturedImageData({ itemId: idToUpdate, uri: photoUri });
+
+    setIsCamaraActiva(false);
+    setEditingItemId(null);
   };
 
   // ===== RETURN =====
 
-  // 1. RENDERIZADO CONDICIONAL (Necesita ser ajustado)
+  // 1. RENDERIZADO CONDICIONAL
   if (isCamaraActiva) {
     return (
       <SafeAreaProvider>
@@ -92,6 +116,8 @@ export default function MenuApp() {
               onEditarCategoria={editarCategoria}
               // NUEVA PROP PARA PASAR LA FUNCIÓN AL MENÚ
               abrirCamaraParaItem={abrirCamaraParaItem}
+              capturedImageData={capturedImageData}
+              onImageProcessed={() => setCapturedImageData(null)}
             />
 
             <Line />

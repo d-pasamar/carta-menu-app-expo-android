@@ -27,6 +27,8 @@ export default function Menu({
   onEditarCategoria,
 
   abrirCamaraParaItem,
+  capturedImageData, // Recibe los datos de la imagen capturada
+  onImageProcessed, // Callback para limpiar después de procesar
 }) {
   // ===== LOGICA =====
 
@@ -45,6 +47,10 @@ export default function Menu({
           onEditarCategoria={onEditarCategoria}
           // Pasamos la función
           abrirCamaraParaItem={abrirCamaraParaItem}
+
+          capturedImageData={capturedImageData} // Pasa los datos
+          onImageProcessed={onImageProcessed} // Pasa el callback
+
         />
       ))
     : null;

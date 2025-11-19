@@ -1,6 +1,6 @@
 // src/components/Menu/section/Section.jsx
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Image,
   Pressable,
@@ -39,13 +39,52 @@ export default function Section({
   onEliminarCategoria,
   onEditarCategoria,
   abrirCamaraParaItem,
+
+  capturedImageData, // Recibe datos de imagen capturada
+  onImageProcessed, // Callback para limpiar
 }) {
-  const { items, isLoading, error, crearItem, eliminarItem, editarItem } =
-    useItems(id);
+  const {
+    items,
+    isLoading,
+    error,
+    crearItem,
+    eliminarItem,
+    editarItem,
+    actualizarImageUriLocal,
+  } = useItems(id);
 
   // ===== ESTADO LOCAL =====
   const [isEditing, setIsEditing] = useState(false);
   const [nuevoTitulo, setNuevoTitulo] = useState(title);
+
+  // Efecto para procesar la imagen capturada
+  useEffect(() => {
+    // console.log(" -> Section recibió capturedImageData:", capturedImageData);
+    if (capturedImageData && capturedImageData.itemId) {
+      // Buscar si el ítem pertenece a esta sección
+      const itemExiste = items.find(
+        (item) => item.id === capturedImageData.itemId
+      );
+
+      if (itemExiste) {
+        console.log(
+          `Section ${id}: Actualizando ítem ${capturedImageData.itemId} con URI:`,
+          capturedImageData.uri
+        );
+
+        // Actualizar el ítem con la nueva URI
+        actualizarImageUriLocal(
+          capturedImageData.itemId,
+          capturedImageData.uri
+        );
+
+        // Notificar al padre que ya procesamos la imagen
+        if (onImageProcessed) {
+          onImageProcessed();
+        }
+      }
+    }
+  }, [capturedImageData, items, actualizarImageUriLocal, onImageProcessed, id]);
 
   // Sincroniza el título
   useState(() => {
@@ -173,7 +212,9 @@ export default function Section({
         onEliminarItem={eliminarItem}
         onEditarItem={editarItem}
         // Enviamos nueva PROP al Item
+        imageUri={item.imageUri}
         abrirCamaraParaItem={abrirCamaraParaItem}
+        actualizarImageUriLocal={actualizarImageUriLocal}
       />
     ));
   };

@@ -16,6 +16,9 @@ export default function useItems(categoriaId) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // ===== Estado separado para guardar solo las URIs locales (no vienen de la API) =====
+  const [localImageUris, setLocalImageUris] = useState({});
+
   // ===== Petición GET para obtener ítems =====
   const fetchItems = async () => {
     setIsLoading(true);
@@ -29,6 +32,8 @@ export default function useItems(categoriaId) {
           id: item.id,
           name: item.nombre, // Cambia 'nombre' a 'name'
           price: parseFloat(item.precio), // Asegura que el precio es un número
+          // Preserva la imageUri local si existe
+          imageUri: localImageUris[item.id] || null,
         }));
 
         setItems(transformados);
@@ -49,7 +54,9 @@ export default function useItems(categoriaId) {
     if (categoriaId) {
       fetchItems();
     }
-  }, []); // Solo se ejecuta si cambia el ID de la categoría
+    // }, []); // Solo se ejecuta si cambia el ID de la categoría
+    //}, [categoriaId, localImageUris]); // Re-fetch cuando cambien las URIs locales
+  }, [categoriaId]);
 
   // ===== Petición POST para añadir items =====
   const crearItem = async (itemData) => {
@@ -69,24 +76,48 @@ export default function useItems(categoriaId) {
   const eliminarItem = async (itemId) => {
     try {
       await itemsAPI.deleteItem(itemId);
+
+      // Limpiar la URI local del ítem eliminado
+      setLocalImageUris((prev) => {
+        const updated = { ...prev };
+        delete updated[itemId];
+        return updated;
+      });
+
       // Recargamos la lista para reflejar el ítem eliminado.
       fetchItems();
     } catch (e) {
       console.error("Error eliminando ítem:", e);
-      etError(e.message || "Error al eliminar ítem");
+      setError(e.message || "Error al eliminar ítem");
     }
   };
 
   // ===== Petición PUT para editar items =====
-  const editarItem = async (itemId, nuevoNombre, nuevoPrecio) => {
+  const editarItem = async (itemId, nuevoNombre, nuevoPrecio, imageUri) => {
     try {
+      // Llamada a la API (solo name y price)
       await itemsAPI.updateItem(itemId, {
         name: nuevoNombre,
         price: nuevoPrecio,
       });
 
+      // Actualizacion inmutable del estado local (items)
+      setItems((prevItems) =>
+        prevItems.map((item) => {
+          if (item.id === itemId) {
+            return {
+              ...item,
+              name: nuevoNombre,
+              price: parseFloat(nuevoPrecio),
+              imageUri: imageUri,
+            };
+          }
+          return item;
+        })
+      );
+
       // Recargar la lista completa desde la API
-      await fetchItems();
+      //await fetchItems();
 
       // El componente Item.jsx gestiona la actualización visual, no forzamos re-fetch.
     } catch (e) {
@@ -97,6 +128,34 @@ export default function useItems(categoriaId) {
     }
   };
 
+  // ===== Actualiza la URI local y el estado (solo frontend) ======
+  const actualizarImageUriLocal = (itemId, nuevaUri) => {
+    // console.log(`actualizarImageUriLocal: ID=${itemId}, URI=${nuevaUri}`); // Debug
+
+    // 1. Guardar en el diccionario de URIs locales
+    setLocalImageUris((prev) => ({
+      ...prev,
+      [itemId]: nuevaUri,
+    }));
+
+    // 2. Actualizar el estado de items inmediatamente
+    setItems((prevItems) => {
+      const itemsActualizados = prevItems.map((item) => {
+        if (item.id === itemId) {
+          // console.log(`Ítem ${itemId} encontrado! Actualizando imageUri...`); // Debug
+          return {
+            ...item,
+            imageUri: nuevaUri,
+          };
+        }
+        return item;
+      });
+
+      // console.log("Ítems después de actualizar:", itemsActualizados); Debug
+      return itemsActualizados;
+    });
+  };
+
   return {
     items,
     isLoading,
@@ -104,5 +163,6 @@ export default function useItems(categoriaId) {
     crearItem,
     eliminarItem,
     editarItem,
+    actualizarImageUriLocal,
   };
 }

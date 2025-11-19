@@ -56,7 +56,7 @@ export default function BotonPermisosCamara({ onPhotoCaptured, onCancel }) {
         ref={cameraRef}
       />
 
-      {/* AÑADIR CONTENEDOR DE BOTONES 🛑 */}
+      {/* AÑADIR CONTENEDOR DE BOTONES */}
       <View style={BotonPermisosCamaraStyles.controles}>
         {/* 1. Botón Voltear */}
         <TouchableOpacity onPress={toggleCameraFacing}>

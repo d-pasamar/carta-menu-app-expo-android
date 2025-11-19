@@ -22,6 +22,12 @@ export default StyleSheet.create({
     width: "25%", // width: 25%;
   },
 
+  // Contenedor principal para MODO VISUALIZACIÓN
+  itemContainer: {
+    flexDirection: "column", // Coloca imagen, detalles y botones apilados verticalmente
+    alignItems: "flex-start", // Alinea horizontalmente los elementos a la izquierda
+  },
+
   // Contenedor principal para MODO EDICIÓN (reemplaza .item-editable)
   itemEditableContainer: {
     flexDirection: "column", // display: flex
@@ -73,5 +79,24 @@ export default StyleSheet.create({
     textAlign: "right",
     backgroundColor: "rgba(255, 255, 255, 0.9)", // Fondo claro para resaltar edición
     fontSize: 18, // Asegura que el texto sea legible
+  },
+
+  // Contenedor de la imagen
+  imageContainer: {
+    width: "100%",
+    height: 100,
+    borderRadius: 6,
+    //backgroundColor: "#f0f0f0",
+    //borderWidth: 1,
+    borderColor: "#ddd",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  // Thumbnail de la imagen
+  itemImageThumbnail: {
+    width: 100, // ANCHO
+    height: 100, // ALTO
+    borderRadius: 8, // Esquinas redondeadas
   },
 });

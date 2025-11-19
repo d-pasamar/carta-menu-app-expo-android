@@ -1,9 +1,10 @@
 // app/components/menu/section/item/Item.jsx
 
-import { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native"; // Importaciones Nativas
+import { Image, StyleSheet, Text, TextInput, View } from "react-native"; // Importaciones Nativas
 
 // Asume que BotonesCRUD.jsx será migrado después
+import defaultImage from "../../../../../img/sin_foto.png"; // Imagen por defecto del producto
+import useItemEditing from "../../../../hooks/useItemEditing"; // Hook con los handlers
 import BotonesCRUD from "../../../botonesCRUD/BotonesCRUD";
 import ItemStyles from "./ItemStyles"; // Importamos los estilos
 
@@ -30,54 +31,29 @@ export default function Item({
   onEliminarItem,
   onEditarItem,
   abrirCamaraParaItem,
+  imageUri, // recibe desde el estado
 }) {
   // ===== ESTADO LOCAL =====
-  const [isEditing, setIsEditing] = useState(false);
-  const [nuevoNombre, setNuevoNombre] = useState(name);
-  const [nuevoPrecio, setNuevoPrecio] = useState(price);
+  //const [isEditing, setIsEditing] = useState(false);
+  //const [nuevoNombre, setNuevoNombre] = useState(name);
+  //const [nuevoPrecio, setNuevoPrecio] = useState(price);
+
+  // ===== LLAMADA AL HOOK useItemEditing.js ( Lógica de Estado y Handlers) =====
+  const {
+    isEditing,
+    nuevoNombre,
+    setNuevoNombre,
+    nuevoPrecio,
+    setNuevoPrecio,
+    handleSave,
+    handleEditClick,
+    handleCRUDBtnClick,
+  } = useItemEditing(id, name, price, onEditarItem, imageUri);
 
   // Convierte el precio a un formato con dos decimales para el input
   const precioDisplay = typeof price === "number" ? price.toFixed(2) : price;
 
-  // ===== MANEJADORES =====
-
-  /**
-   * Manejador que guarda los estados del ítem.
-   * Llama a la función onEditarItem con los valores actualizados.
-   *
-   * @returns {void} - Actualiza estado de edición, no devuelve valor.
-   */
-  const handleSave = () => {
-    if (nuevoNombre.trim() && !isNaN(parseFloat(nuevoPrecio))) {
-      // Llamada a la función del hook usando el ID
-      onEditarItem(
-        id, // Usamos el ID del ítem
-        nuevoNombre,
-        parseFloat(nuevoPrecio)
-      );
-      setIsEditing(false);
-    }
-  };
-
-  /**
-   * Manejador que activa el modo edición del ítem.
-   * @returns {void} - Activa el modo edición.
-   */
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
-  /**
-   * Manejador que alterna entre los modos 'Editar' y 'Guardar' el ítem.
-   */
-  const handleCRUDBtnClick = isEditing ? handleSave : handleEditClick;
-
-  // ===== LOGICA =====
-
-  // El estilo condicional se maneja directamente con un array de estilos:
-  const itemContainerStyle = modoEdicion
-    ? ItemStyles.itemEditableContainer
-    : {};
+  // ===== LÓGICA DE RENDERIZADO =====
 
   // Renderizado condicional de los detalles del ítem
   const itemDetails =
@@ -133,10 +109,24 @@ export default function Item({
 
   // Reemplazamos <article> por <View> y aplicamos el estilo condicional
   return (
-    <View style={itemContainerStyle}>
+    <View
+      style={
+        modoEdicion
+          ? ItemStyles.itemEditableContainer
+          : ItemStyles.itemContainer
+      }
+    >
+      {/* Muestra una imagen */}
+      <View style={ItemStyles.imageContainer}>
+        <Image
+          // 💡 Vamos a intentar que se le pase alguna imagen
+          source={imageUri ? { uri: imageUri } : defaultImage}
+          style={ItemStyles.itemImageThumbnail}
+          resizeMode="cover"
+        />
+      </View>
       {/* Contenedor de Detalles (Alineación horizontal de Nombre/Precio o Inputs) */}
       <View style={detailsContainerStyle}>{itemDetails}</View>
-
       {/* Botones de CRUD (Solo en modo edición) */}
       {botonesCRUD}
     </View>
