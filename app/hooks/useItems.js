@@ -1,6 +1,12 @@
 // app/hooks/useItems.js
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
+import {
+  deleteImagePermanently,
+  saveImagePermanently,
+} from "../utils/imageStorage";
+
 import itemsAPI from "../services/itemsAPI";
 
 const USER_ID = 7032; // ID de usuario
@@ -18,6 +24,31 @@ export default function useItems(categoriaId) {
 
   // ===== Estado separado para guardar solo las URIs locales (no vienen de la API) =====
   const [localImageUris, setLocalImageUris] = useState({});
+
+  // ===== useEffect para cargar URIs al montar
+  useEffect(() => {
+    const cargarImagenesLocales = async () => {
+      try {
+        const key = `localImages_categoria_${categoriaId}`;
+        const stored = await AsyncStorage.getItem(key);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          console.log(
+            `📦 Cargadas ${
+              Object.keys(parsed).length
+            } imágenes locales para categoría ${categoriaId}`
+          );
+          setLocalImageUris(parsed);
+        }
+      } catch (error) {
+        console.error("Error cargando imágenes locales:", error);
+      }
+    };
+
+    if (categoriaId) {
+      cargarImagenesLocales();
+    }
+  }, [categoriaId]);
 
   // ===== Petición GET para obtener ítems =====
   const fetchItems = async () => {
@@ -56,7 +87,7 @@ export default function useItems(categoriaId) {
     }
     // }, []); // Solo se ejecuta si cambia el ID de la categoría
     //}, [categoriaId, localImageUris]); // Re-fetch cuando cambien las URIs locales
-  }, [categoriaId]);
+  }, [categoriaId, localImageUris]);
 
   // ===== Petición POST para añadir items =====
   const crearItem = async (itemData) => {
@@ -75,14 +106,29 @@ export default function useItems(categoriaId) {
   // ===== Petición DELETE para eliminar items =====
   const eliminarItem = async (itemId) => {
     try {
+      // Eliminar imagen permanente si existe
+      if (localImageUris[itemId]) {
+        await deleteImagePermanently(localImageUris[itemId]);
+      }
+
       await itemsAPI.deleteItem(itemId);
 
       // Limpiar la URI local del ítem eliminado
+      /*
       setLocalImageUris((prev) => {
         const updated = { ...prev };
         delete updated[itemId];
         return updated;
       });
+      */
+
+      // Limpiar del estado y AsyncStorage
+      const nuevasUris = { ...localImageUris };
+      delete nuevasUris[itemId];
+      setLocalImageUris(nuevasUris);
+
+      const key = `localImages_categoria_${categoriaId}`;
+      await AsyncStorage.setItem(key, JSON.stringify(nuevasUris));
 
       // Recargamos la lista para reflejar el ítem eliminado.
       fetchItems();
@@ -129,31 +175,54 @@ export default function useItems(categoriaId) {
   };
 
   // ===== Actualiza la URI local y el estado (solo frontend) ======
-  const actualizarImageUriLocal = (itemId, nuevaUri) => {
+  const actualizarImageUriLocal = async (itemId, nuevaUri) => {
     // console.log(`actualizarImageUriLocal: ID=${itemId}, URI=${nuevaUri}`); // Debug
 
-    // 1. Guardar en el diccionario de URIs locales
-    setLocalImageUris((prev) => ({
-      ...prev,
-      [itemId]: nuevaUri,
-    }));
+    // Verificar que nuevaUri existe
+    if (!nuevaUri) {
+      console.error(
+        "❌ Abortando: URI de imagen temporal es nula o indefinida."
+      );
+      return; // Detener la ejecución si no hay URI
+    }
 
-    // 2. Actualizar el estado de items inmediatamente
-    setItems((prevItems) => {
-      const itemsActualizados = prevItems.map((item) => {
-        if (item.id === itemId) {
-          // console.log(`Ítem ${itemId} encontrado! Actualizando imageUri...`); // Debug
-          return {
-            ...item,
-            imageUri: nuevaUri,
-          };
+    try {
+      let permanentUri = nuevaUri;
+
+      // Solo copiar si es un archivo temporal de cámara
+      if (nuevaUri.startsWith("file://")) {
+        permanentUri = await saveImagePermanently(nuevaUri, itemId);
+
+        // Borrar solo la foto anterior de este ítem si también era file://
+        if (
+          localImageUris[itemId] &&
+          localImageUris[itemId].startsWith("file://")
+        ) {
+          await deleteImagePermanently(localImageUris[itemId]);
         }
-        return item;
-      });
+      }
 
-      // console.log("Ítems después de actualizar:", itemsActualizados); Debug
-      return itemsActualizados;
-    });
+      // 1. Actualizar el estado local con la URI PERMANENTE
+      const nuevasUris = { ...localImageUris, [itemId]: permanentUri };
+      setLocalImageUris(nuevasUris);
+
+      // 2. Guardar en AsyncStorage
+      const key = `localImages_categoria_${categoriaId}`;
+      await AsyncStorage.setItem(key, JSON.stringify(nuevasUris));
+
+      console.log("✅ URI permanente guardada en AsyncStorage");
+
+      // 3. Actualizar el estado de items
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.id === itemId ? { ...item, imageUri: permanentUri } : item
+        )
+      );
+
+      
+    } catch (error) {
+      console.error("❌ Error en actualizarImageUriLocal:", error);
+    }
   };
 
   return {

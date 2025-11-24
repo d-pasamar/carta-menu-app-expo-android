@@ -26,7 +26,8 @@ export default function MenuApp() {
   const [capturedImageData, setCapturedImageData] = useState(null);
 
   // ===== LLAMADA AL HOOK DE IMAGEN =====
-  const { seleccionarImagenParaItem, setEditingItemId } = useImagePicker();
+  const { seleccionarImagenParaItem, editingItemId, setEditingItemId } =
+    useImagePicker();
 
   // ===== GESTION DEL ESTADO Y CRUD DE CATEGORIAS (NIVEL SUPERIOR) =====
   // useCategorias se encarga de cargar las categorías desde la API
@@ -54,11 +55,13 @@ export default function MenuApp() {
 
   // --> FUNCIÓN: Guardado LOCAL (Única función de callback para Galería y Cámara)
   const handlePhotoCaptured = (photoUri, itemIdFromCamera = null) => {
-    const idToUpdate = itemIdFromCamera;
+    // Se usa el ID que viene del parámero 0 guardado en el hook useImagePicker.js
+
+    const idToUpdate = itemIdFromCamera || editingItemId;
     if (!idToUpdate) {
       console.error("No hay ID de ítem");
       setIsCamaraActiva(false);
-      return;
+      return; // no guarda nada
     }
 
     // Guardamos la UIR y el ID para que Menu/Section/Item lo procesen
@@ -79,7 +82,7 @@ export default function MenuApp() {
             onPhotoCaptured={handlePhotoCaptured}
             onCancel={() => {
               setIsCamaraActiva(false);
-              setEditingItemId(null); // Asegura limpieza al cancelar
+              setEditingItemId(null); // Se limpia al cancelar
             }}
           />
         </SafeAreaView>

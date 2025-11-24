@@ -59,7 +59,7 @@ export default function Section({
 
   // Efecto para procesar la imagen capturada
   useEffect(() => {
-    // console.log(" -> Section recibió capturedImageData:", capturedImageData);
+    // console.log(" -> Section recibió capturedImageData:", capturedImageData); // Debug
     if (capturedImageData && capturedImageData.itemId) {
       // Buscar si el ítem pertenece a esta sección
       const itemExiste = items.find(

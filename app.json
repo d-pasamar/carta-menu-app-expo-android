@@ -2,7 +2,7 @@
   "expo": {
     "name": "carta-menu-app-expo-android",
     "slug": "carta-menu-app-expo-android",
-    "version": "1.0.0",
+    "version": "0.8.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "cartamenuappexpoandroid",
@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.dpasamar.cartamenuappexpoandroid"
     },
     "web": {
       "output": "static",
@@ -43,6 +44,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "eb2de255-ce9f-43bf-95fc-fa36bd4c61ff"
+      }
     }
   }
 }
