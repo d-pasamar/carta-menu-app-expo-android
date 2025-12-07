@@ -1,6 +1,6 @@
 import { useState } from "react";
 // IMPORTACIONES NATIVAS
-import { ImageBackground, View } from "react-native";
+import { ImageBackground, ScrollView, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 // Nuestros componentes
@@ -8,6 +8,7 @@ import BotonPermisosCamara from "./components/botonPermisosCamara/BotonPermisosC
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
 import Line from "./components/Line";
+import MapaUbicacion from "./components/mapaUbicacion/MapaUbicacion";
 import Menu from "./components/menu/Menu";
 import ModoEdicionToggle from "./components/modoEdicion/ModoEdicionToggle";
 
@@ -101,27 +102,31 @@ export default function MenuApp() {
           style={styles.imageBackground}
         >
           <View style={styles.menuContainer}>
-            <Header />
+            <ScrollView>
+              <Header />
 
-            <ModoEdicionToggle
-              modoEdicion={modoEdicion}
-              setModoEdicion={setModoEdicion}
-            />
+              <ModoEdicionToggle
+                modoEdicion={modoEdicion}
+                setModoEdicion={setModoEdicion}
+              />
 
-            <Line />
+              <Line />
 
-            <Menu
-              data={categorias}
-              modoEdicion={modoEdicion}
-              // Funciones CRUD de CATEGORÍA
-              onAgregarCategoria={agregarCategoria}
-              onEliminarCategoria={eliminarCategoria}
-              onEditarCategoria={editarCategoria}
-              // NUEVA PROP PARA PASAR LA FUNCIÓN AL MENÚ
-              abrirCamaraParaItem={abrirCamaraParaItem}
-              capturedImageData={capturedImageData}
-              onImageProcessed={() => setCapturedImageData(null)}
-            />
+              <Menu
+                data={categorias}
+                modoEdicion={modoEdicion}
+                // Funciones CRUD de CATEGORÍA
+                onAgregarCategoria={agregarCategoria}
+                onEliminarCategoria={eliminarCategoria}
+                onEditarCategoria={editarCategoria}
+                // NUEVA PROP PARA PASAR LA FUNCIÓN AL MENÚ
+                abrirCamaraParaItem={abrirCamaraParaItem}
+                capturedImageData={capturedImageData}
+                onImageProcessed={() => setCapturedImageData(null)}
+              />
+
+              <MapaUbicacion />
+            </ScrollView>
 
             <Line />
             <Footer />

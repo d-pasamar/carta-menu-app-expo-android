@@ -12,6 +12,14 @@
       "supportsTablet": true
     },
     "android": {
+      // ID de paquete ÚNICO y correcto
+      "package": "com.dpasamar.cartamenuappexpoandroid",
+      "config": {
+        "googleMaps": {
+          // API
+          "apiKey": "AIzaSyBn-HdnT4lqC0poBl0et0vzep1xxJPBrCY"
+        }
+      },
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -19,8 +27,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
-      "package": "com.dpasamar.cartamenuappexpoandroid"
+      "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
